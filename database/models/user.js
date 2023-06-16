@@ -21,7 +21,7 @@ const User = config.define('user', {
         allowNull: false,
     },
     id_users: {
-        type: Sequelize.STRING(15),
+        type: Sequelize.STRING(40),
         allowNull: false,
         primaryKey: true
     },
@@ -44,6 +44,18 @@ const User = config.define('user', {
         type: Sequelize.STRING(15),
         allowNull: false,
     },
+    name: {
+        type: Sequelize.STRING(100),
+        allowNull: false
+    },
+    email: {
+        type: Sequelize.STRING(100),
+        allowNull: false
+    },
+    phone: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    }
 }, {
     timestamps: false
 });
