@@ -87,14 +87,14 @@ function DisableUser(id_user) {
   return fetchWrapper.put(`${baseUrl}/disable/${id_user}`);
 }
 
-function hasPermissionTo(id_permission) {
+function hasPermissionTo(permission) {
   /* 
     Determina si el usuario acualmente autenticado
     tiene permiso para lo que indique el parametro
     */
   if (!userSubject.value) return false;
 
-  return fetchWrapper.get(`${baseUrl}/has-permission-to/${id_permission}`)
+  return fetchWrapper.get(`${baseUrl}/has-permission-to/${permission}`)
     .then((per) => {
       if (per.has_permission) {
         return true;

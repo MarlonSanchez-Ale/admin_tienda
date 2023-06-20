@@ -58,7 +58,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
     <>
       {showMainLayout && (
         <MenuSideBar mainPage={
-          <main >
+          <main>
             <ToastTP />
             <Component {...pageProps} />
           </main>

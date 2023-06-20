@@ -1,3 +1,4 @@
+import React from "react";
 import {
     Card,
     Typography,
@@ -6,167 +7,374 @@ import {
     ListItemPrefix,
     ListItemSuffix,
     Chip,
-    Navbar,
-    Collapse,
-    Button,
-    IconButton,
+    Accordion,
+    AccordionHeader,
+    AccordionBody,
 } from "@material-tailwind/react";
-import {
-    PresentationChartBarIcon,
-    ShoppingBagIcon,
-    UserCircleIcon,
-    Cog6ToothIcon,
-    InboxIcon,
-    PowerIcon,
-} from "@heroicons/react/24/solid";
-import React from "react";
+import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { RiDashboard2Line, RiNumbersLine, RiSurveyLine, RiAttachment2, RiAccountPinCircleLine, RiLogoutCircleRLine } from 'react-icons/ri'
+
 import Link from "next/link";
+import { userService } from "@/app/services/user.service";
+import { useHasPermissionStatus } from "@/app/hook/useHasPermissionStatus";
+import PropTypes from 'prop-types'
+
 export default function MenuSideBar(props) {
 
-    const [openNav, setOpenNav] = React.useState(false);
+    const [open, setOpen] = React.useState(0);
 
-    React.useEffect(() => {
-        window.addEventListener(
-            "resize",
-            () => window.innerWidth >= 960 && setOpenNav(false)
-        );
-    }, []);
+    const handleOpen = (value) => {
+        setOpen(open === value ? 0 : value);
+    };
 
-    const navList = (
-        <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-            <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-normal"
-            >
-                <Link href="/" className="flex items-center">
-                    Dashboard
-                </Link>
-            </Typography>
-            <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-normal"
-            >
-                <Link href="/sales" className="flex items-center">
-                    Ventas
-                </Link>
-            </Typography>
-            <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-normal"
-            >
-                <Link href="/products" className="flex items-center">
-                    Inventario
-                </Link>
-            </Typography>
-            <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-normal"
-            >
-                <Link href="/bills" className="flex items-center">
-                    Gastos
-                </Link>
-            </Typography>
 
-            <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-normal"
-            >
-                <Link href="/users" className="flex items-center">
-                    Usuarios
-                </Link>
-            </Typography>
-        </ul>
-    );
+
+    function logout() {
+        userService.logout();
+    }
+
+    // Permisos de Reportes
+    const hasPermissionListReport = useHasPermissionStatus("Listar Reporte")
+
+    // Permisos de venta
+    const hasPermissionListSales = useHasPermissionStatus("Listar Ventas");
+    const hasPermissionRegisterSales = useHasPermissionStatus("Registrar Venta")
+    const hasPermissionSalesPoint = useHasPermissionStatus("Listar Punto Venta")
+    const hasPermissionRegisterSalesPoint = useHasPermissionStatus("Registrar Punto Venta")
+
+    // Permisos de inventarios
+    const hasPermissionListProducts = useHasPermissionStatus("Listar Productos")
+    const hasPermissionRegisterProducts = useHasPermissionStatus("Registrar Producto")
+    const hasPermissionListCategory = useHasPermissionStatus("Listar Categorias")
+    const hasPermissionRegisterCategory = useHasPermissionStatus("Crear Categoria")
+    const hasPermissionListBuy = useHasPermissionStatus("Listar Compra Producto")
+    const hasPermissionRegisterBuy = useHasPermissionStatus("Registrar Compra Producto")
+
+    // Permisos de proveedores
+
+    const hasPermissionListSupplier = useHasPermissionStatus("Listar Proveedor")
+    const hasPermissionRegisterSupplier = useHasPermissionStatus("Registrar Proveedor")
+
+    //Permisos de gastos
+    const hasPermissionListBills = useHasPermissionStatus("Listar Gastos")
+    const hasPermissionRegisterBills = useHasPermissionStatus("Registrar Gasto")
+
+
+    // Permisos de usuario
+    const hasPermissionListUser = useHasPermissionStatus("Listar Usuario")
+    const hasPermissionRegisterUser = useHasPermissionStatus("Crear Usuario")
 
 
     return (
 
-        <div className="flex flex-col justify-center gap-10">
-            <Navbar className="sticky inset-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
-                <div className="flex items-center justify-between text-blue-gray-900">
-                    <Typography
-                        as="a"
-                        href="#"
-                        className="mr-4 cursor-pointer py-1.5 font-medium"
-                    >
-                        Administración de Tienda
-                    </Typography>
-                    <div className="flex items-center gap-4">
-                        <div className="mr-4 hidden lg:block">{navList}</div>
-                        <Button
-                            variant="gradient"
-                            size="sm"
-                            className="hidden lg:inline-block"
-                        >
-                            <Link href="/reports" className="flex items-center">
-                                Reportes
-                            </Link>
-                        </Button>
-                        <IconButton
-                            variant="text"
-                            className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-                            ripple={false}
-                            onClick={() => setOpenNav(!openNav)}
-                        >
-                            {openNav ? (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    className="h-6 w-6"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            ) : (
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth={2}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                </svg>
-                            )}
-                        </IconButton>
+        <div className="flex flex-row justify-center gap-80">
+            <div className="flex justify-center">
+                <Card className="fixed top-4 left-4 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+                    <div className="mb-2 p-4">
+                        <Typography variant="h5" color="blue-gray">
+                            Sidebar
+                        </Typography>
                     </div>
-                </div>
-                <Collapse open={openNav}>
-                    {navList}
-                    <Button variant="gradient" size="sm" fullWidth className="mb-2">
-                        <Link href="/reports" className="flex items-center">
-                            Reportes
-                        </Link>
-                    </Button>
-                </Collapse>
-            </Navbar>
+                    <List>
+                        {hasPermissionListReport && (
+                            <Link href="/">
+                                <ListItem>
+                                    <ListItemPrefix>
+                                        <RiDashboard2Line className="h-5 w-5" />
+                                    </ListItemPrefix>
+                                    <Typography color="blue-gray" className="mr-auto font-normal">
+                                        Dashboard
+                                    </Typography>
+                                </ListItem>
+                            </Link>
+                        )}
+                        {hasPermissionListSales && (
+                            <Accordion
+                                open={open === 1}
+                                icon={
+                                    <ChevronDownIcon
+                                        strokeWidth={2.5}
+                                        className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
+                                    />
+                                }
+                            >
+                                <ListItem className="p-0" selected={open === 1}>
+                                    <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
+                                        <ListItemPrefix>
+                                            <RiNumbersLine className="h-5 w-5" />
+                                        </ListItemPrefix>
+                                        <Typography color="blue-gray" className="mr-auto font-normal">
+                                            Registro de Ventas
+                                        </Typography>
+                                    </AccordionHeader>
+                                </ListItem>
+                                <AccordionBody className="py-1">
+                                    <List className="p-0">
+                                        <Link href="/sales/">
+                                            <ListItem>
+                                                <ListItemPrefix>
+                                                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                </ListItemPrefix>
+                                                Listar venta
+                                            </ListItem>
+                                        </Link>
+                                        {hasPermissionRegisterSales && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Registrar Venta
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionSalesPoint && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Puntos de Venta
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionRegisterSalesPoint && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Añadir P. Venta
+                                                </ListItem>
+                                            </Link>
+                                        )}
 
+                                    </List>
+                                </AccordionBody>
+                            </Accordion>
+                        )}
+                        {hasPermissionListProducts && (
+
+                            <Accordion
+                                open={open === 2}
+                                icon={
+                                    <ChevronDownIcon
+                                        strokeWidth={2.5}
+                                        className={`mx-auto h-4 w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
+                                    />
+                                }
+                            >
+                                <ListItem className="p-0" selected={open === 2}>
+                                    <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
+                                        <ListItemPrefix>
+                                            <RiSurveyLine className="h-5 w-5" />
+                                        </ListItemPrefix>
+                                        <Typography color="blue-gray" className="mr-auto font-normal">
+                                            Inventario de Productos
+                                        </Typography>
+                                    </AccordionHeader>
+                                </ListItem>
+                                <AccordionBody className="py-1">
+                                    <List className="p-0">
+                                        <Link href="/stock/">
+                                            <ListItem>
+                                                <ListItemPrefix>
+                                                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                </ListItemPrefix>
+                                                Listar Productos
+                                            </ListItem>
+                                        </Link>
+                                        {hasPermissionRegisterProducts && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Agregar Productos
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionListCategory && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Listar Categorías
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionRegisterCategory && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Agregar Categoría
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionListBuy && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Listar Compra
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionRegisterBuy && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Registrar Compra
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionListSupplier && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Listar Proveedores
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionRegisterSupplier && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Registrar Proveedor
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                    </List>
+                                </AccordionBody>
+                            </Accordion>
+                        )}
+                        {hasPermissionListBills && (
+                            <Accordion
+                                open={open === 3}
+                                icon={
+                                    <ChevronDownIcon
+                                        strokeWidth={2.5}
+                                        className={`mx-auto h-4 w-4 transition-transform ${open === 3 ? "rotate-180" : ""}`}
+                                    />
+                                }
+                            >
+                                <ListItem className="p-0" selected={open === 3}>
+                                    <AccordionHeader onClick={() => handleOpen(3)} className="border-b-0 p-3">
+                                        <ListItemPrefix>
+                                            <RiAttachment2 className="h-5 w-5" />
+                                        </ListItemPrefix>
+                                        <Typography color="blue-gray" className="mr-auto font-normal">
+                                            Gastos Generales
+                                        </Typography>
+                                    </AccordionHeader>
+                                </ListItem>
+                                <AccordionBody className="py-1">
+                                    <List className="p-0">
+                                        {hasPermissionListBills && (
+                                            <Link href="/bills/">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Listar Gastos
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionRegisterBills && (
+                                            <Link href="">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Registrar Gastos
+                                                </ListItem>
+                                            </Link>
+
+                                        )}
+
+                                    </List>
+                                </AccordionBody>
+                            </Accordion>
+                        )}
+                        {hasPermissionListUser && (
+                            <Accordion
+                                open={open === 4}
+                                icon={
+                                    <ChevronDownIcon
+                                        strokeWidth={2.5}
+                                        className={`mx-auto h-4 w-4 transition-transform ${open === 4 ? "rotate-180" : ""}`}
+                                    />
+                                }
+                            >
+                                <ListItem className="p-0" selected={open === 4}>
+                                    <AccordionHeader onClick={() => handleOpen(4)} className="border-b-0 p-3">
+                                        <ListItemPrefix>
+                                            <RiAccountPinCircleLine className="h-5 w-5" />
+                                        </ListItemPrefix>
+                                        <Typography color="blue-gray" className="mr-auto font-normal">
+                                            Usuarios
+                                        </Typography>
+                                    </AccordionHeader>
+                                </ListItem>
+                                <AccordionBody className="py-1">
+                                    <List className="p-0">
+                                        {hasPermissionListUser && (
+                                            <Link href="/users/">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Listar Usuarios
+                                                </ListItem>
+                                            </Link>
+                                        )}
+                                        {hasPermissionRegisterUser && (
+                                            <Link href="/users/create/register">
+                                                <ListItem>
+                                                    <ListItemPrefix>
+                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                                    </ListItemPrefix>
+                                                    Crear Usuario
+                                                </ListItem>
+                                            </Link>
+                                        )}
+
+                                        <ListItem>
+                                            <ListItemPrefix>
+                                                <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                                            </ListItemPrefix>
+                                            Mi Cuenta
+                                        </ListItem>
+                                    </List>
+                                </AccordionBody>
+                            </Accordion>
+                        )}
+
+                        <ListItem onClick={logout}>
+                            <ListItemPrefix>
+                                <RiLogoutCircleRLine className="h-5 w-5" />
+                            </ListItemPrefix>
+                            Log Out
+                        </ListItem>
+                    </List>
+                </Card>
+            </div>
 
             <main className='p-20'>
                 {props.mainPage}
             </main>
 
-        </div>
+        </div >
     );
 }
 

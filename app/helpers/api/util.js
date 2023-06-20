@@ -1,7 +1,6 @@
 //const path = require("path");
 const fs = require("fs");
-const db = require("../../../db/databaseIndex");
-const logger = require('../../services/logger.service')
+
 import { Parser } from "json2csv";
 
 export {

@@ -34,20 +34,20 @@ function handler(req, res) {
       //Validando que ha llegado un userName desde el cliente
       if (!userName) {
         return res.status(400).json({
-          title: 'Se ha detectado un error por falta de datos.',
-          message: 'Debe ingresar el nombre de usuario'
+          title: 'Error por falta de datos.',
+          message: 'Ingresar el nombre de usuario'
         });
       }
 
 
       //Validando que el username cumpla con los parametros de las expresiones regulares.
-      if (!validausuario.test(userName)) {
+     /* if (!validausuario.test(userName)) {
         res.status(400).json({
-          title: 'Se ha detectado un error, el nombre de usuario es inválido.',
+          title: 'Nombre de usuario es inválido.',
           message: 'Permite letras,no permite _ o . en el inicio ni al final , no permine _. y una longitud de 3 a 15'
         });
         return;
-      }
+      }*/
 
 
       if (!password) {
@@ -81,13 +81,13 @@ function handler(req, res) {
       //console.log(userSearched)
 
       if (!userSearched) {
-        res.status(404).json({
-          title: 'Se ha detectado un error, no se encontró el usuario ingresado.',
-          message: 'El usuario ingresado no existe en la base de datos, asegurese de escribir el usuario correctamente.'
+        return res.status(404).json({
+          title: 'No se encontró el usuario ingresado.',
+          message: 'Asegurese de escribir el usuario correctamente.'
         });
-        req?.log?.info(`-authenticate- Usuario no encontrado: ${userName}`);
-        throw "Usuario no encontrado";
-        return;
+       // req?.log?.info(`-authenticate- Usuario no encontrado: ${userName}`);
+       // throw "Usuario no encontrado";
+      
       }
 
      
@@ -100,13 +100,13 @@ function handler(req, res) {
         //Validando si el usuario esta activo
 
         if(userStatus === 'INACTIVO') {
-          res.status(404).json({
-            title: 'Se ha detectado un error, usuario no activo.',
+          return res.status(404).json({
+            title: 'Usuario no activo.',
             message: 'El usuario ingresado existe en la base de datos, sin embargo no se encuentra activo.'
           });
-          req?.log?.info(`-authenticate- Usuario no encontrado: ${userName}`);
-          throw "Usuario no encontrado";
-          return;
+          //req?.log?.info(`-authenticate- Usuario no encontrado: ${userName}`);
+          //throw "Usuario no encontrado";
+          
         }
 
       //Validando que el password es correcto 
@@ -115,13 +115,13 @@ function handler(req, res) {
       const passwordsMatch = userSearched.hash === inputHash
 
       if (!passwordsMatch) {
-        res.status(404).json({
-          title: 'Se ha detectado un error, contraseña incorrecta.',
+        return res.status(404).json({
+          title: 'Contraseña incorrecta.',
           message: 'Asegurese de escribir la contraseña correctamente.'
         });
-        req?.log?.info(`-authenticate- Contraseña incorrecta: ${userName}`);
-        throw "Contraseña incorrecta";
-        return;
+       // req?.log?.info(`-authenticate- Contraseña incorrecta: ${userName}`);
+        //throw "Contraseña incorrecta";
+        
       }
 
       //Creacion de token de seguridad

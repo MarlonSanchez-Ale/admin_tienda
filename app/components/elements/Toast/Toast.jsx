@@ -2,7 +2,7 @@ import React, { useState, useEffect, forwardRef } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { toastService, ToastType } from '../../../services/toast.service';
-import { Alert, Typography  } from "@material-tailwind/react";
+import { Alert, Typography, Collapse, Card, CardBody, CardHeader } from "@material-tailwind/react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline"
 
 export default ToastTP;
@@ -22,9 +22,12 @@ ToastTP.defaultProps = {
 });*/
 
 function ToastTP({ id, fade }) {
+
+
     const router = useRouter();
     const [toasts, setToasts] = useState([]);
     const [open, setOpen] = useState(true);
+    const toggleOpen = () => setOpen(cur => !cur);
 
     useEffect(() => {
         // Subscripcion al nuevo notificador de toast
@@ -114,13 +117,63 @@ function ToastTP({ id, fade }) {
         <>
 
             {toasts.map((toast, index) =>
-                    <Alert color={bgClass(toast)} key={index} onClose={() => removeToast(toast)} >
-                        <Typography >{toast.title}</Typography>
-                        <span dangerouslySetInnerHTML={{ __html: toast.message }}></span>
-                    </Alert>
+
+                <Collapse open={open}>
+                    <Card className="my-4 mx-auto w-8/12" color={bgClass(toast)}>
+                        <CardBody>
+                            <div className='flex flex-row justify-center gap-5'>
+                                <div>
+                                    <InformationCircleIcon className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <Typography variant="h5" color="white" className="mb-2">
+                                        {toast.title}
+                                    </Typography>
+                                    <span dangerouslySetInnerHTML={{ __html: toast.message }}></span>
+                                </div>
+                            </div>
+
+                            
+                        </CardBody>
+                    </Card>
+                </Collapse>
             )}
 
         </>
     );
 }
 
+/*
+
+<div
+      class="mx-2 sm:mx-auto max-w-sm  flex flex-row items-center justify-between bg-blue-200 p-3 text-sm leading-none font-medium rounded-xl whitespace-no-wrap">
+      <div class="inline-flex items-center text-blue-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+            clip-rule="evenodd" />
+        </svg>
+        This is an info message!
+      </div>
+      <div class="text-blue-700 cursor-pointer hover:text-blue-800">
+        Action(3s)
+      </div>
+    </div>
+
+
+     <Alert 
+                color={bgClass(toast)} 
+                key={index}
+                 animate={{
+                    mount: { y: 0 },
+                    unmount: { y: 100 },
+                }} 
+                icon={
+                    <InformationCircleIcon className="h-6 w-6" />
+                  }
+                onClose={() => removeToast(toast)} >
+                    <Typography >{toast.title}</Typography>
+                    <span dangerouslySetInnerHTML={{ __html: toast.message }}></span>
+                </Alert>
+
+*/
