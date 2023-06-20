@@ -16,7 +16,6 @@ function UserListTable({ users, deleteUserCallback }) {
 
     const TABLE_HEAD = ["USER CREADOR", "USUARIO EDITOR", "FECHA CREACIÓN", "FECHA EDICIÓN", "USUARIO", "NOMBRE", "EMAIL", "TELÉFONO", "ESTADO"];
 
-    console.log(users)
 
     return (
         <>
@@ -39,7 +38,7 @@ function UserListTable({ users, deleteUserCallback }) {
                     </thead>
                     <tbody>
                         {users &&  users.map(({ USER_CREATE, USER_UPDATE, FECHA_CREADO, FECHA_EDITADO, ID_USUARIO, USUARIO,  NOMBRE, EMAIL, TELEFONO, ESTADO}, index) => (
-                            <tr key={name} className="even:bg-blue-gray-50/50">
+                            <tr key={index} className="even:bg-blue-gray-50/50">
                                 <td className="p-4">
                                     <Typography variant="small" color="blue-gray" className="font-normal">
                                         {USER_CREATE}
@@ -77,7 +76,7 @@ function UserListTable({ users, deleteUserCallback }) {
                                 </td>
                                 <td className="p-4">
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {TELEFONO}
+                                        {TELEFONO ? TELEFONO : "Sin dato"}
                                     </Typography>
                                 </td>
                                 <td className="p-4">
