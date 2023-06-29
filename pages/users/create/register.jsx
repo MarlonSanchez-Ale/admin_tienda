@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     Card,
     CardHeader,
@@ -6,23 +6,24 @@ import {
     Input,
     Button,
     Typography,
-    Checkbox,
-
+    Tooltip,
+    Alert,
+    IconButton
 } from "@material-tailwind/react";
 import { BsPersonCircle } from 'react-icons/bs'
-import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { InformationCircleIcon } from "@heroicons/react/24/solid"
+import { userService } from "@/app/services/user.service";
+import { toastService } from "@/app/services/toast.service";
+import { BellIcon } from "@heroicons/react/24/solid";
+import { ClockIcon } from "@heroicons/react/24/outline";
+import Select from "react-tailwindcss-select";
+import { InformationCircleIcon as InformationCircleIconSolid } from "@heroicons/react/24/solid"
+import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
+import ToastTP from "@/app/components/elements/Toast/Toast";
 
 import { Fragment } from "react";
-
-const schema = yup.object({
-    userName: yup.string().required(),
-    password: yup.string().required(),
-}).required();
 
 
 function Copyright(props) {
@@ -40,36 +41,106 @@ function Copyright(props) {
 
 export default function Register() {
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
-    });
+    const [profile, setProfile] = useState([])
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isConfigVisible, setIsConfigVisible] = useState(false);
+  
+
+
+    function togglePasswordVisibility() {
+        setIsPasswordVisible((prevState) => !prevState);
+    }
+
+    function toggleConfigVisibility() {
+        setIsConfigVisible((prevState) => !prevState);
+    }
 
     const router = useRouter()
+    const passwordValid = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm
+
+    const [newUser, setNewUser] = useState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        phone: 0,
+        password: "",
+        conf_pass: "",
+        id_profile: ""
+    });
 
 
-    const onSubmit = async (data) => {
-        //console.log(data)
+    const options = [];
 
-        const options = {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        }
+    useEffect(() => {
+        let isMounted = true;
+        userService.getProfiles()
+            .then(u => {
+                if (isMounted) {
+                    //console.log(u)
+                    setProfile(u.dataProfiles)
 
-        await fetch('http://localhost:3000/api/users/register', options)
-            .then(res => res.json())
-            .then(data => {
-                //if (data) router.push('/login')
-                console.log(data)
+                }
+            }).catch((err) => {
+                if (isMounted) {
+                    setProfile([]);
+                    toastService.warn(err.message);
+                }
+
+            });
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    profile.map((a) => {
+        options.push(({
+            value: a.id_profile,
+            label: a.profile
+        }))
+    })
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        //console.log(newUser)
+
+        return userService.register(newUser)
+            .then((res) => {
+                toastService.success(res.title, res.message, {
+                    keepAfterRouteChange: true,
+                });
+                handleCancel()
+                router.push("/users");
             })
+            .catch((error) => {
+                toastService.error(error.title, error.message, { keepAfterRouteChange: true });
+                //console.log(error)
+            });
+    }
 
+    const handleCancel = async (e) => {
+        setNewUser({
+            ...newUser,
+            firstname: "",
+            lastname: "",
+            email: "",
+            phone: 0,
+            password: "",
+            conf_pass: "",
+            id_profile: ""
+        })
     }
 
 
+
+
+
+    //console.log(idProfile.value)
+
     return (
         <Fragment>
-
-            <div className="container mx-auto my-10 flex justify-center">
+            <div className="container flex justify-center">
                 <Card className="w-full max-w-[40rem]">
                     <CardHeader
                         color="blue"
@@ -89,42 +160,149 @@ export default function Register() {
                     </CardHeader>
                     <CardBody className="flex justify-center">
 
-                        <form className="mt-5 mb-2 " onSubmit={handleSubmit(onSubmit)}>
-                            <div className="my-4 flex flex-col gap-4 justify-center w-full">
-                                <Input size="lg" type="text" label="Nombre Completo" name="name" {...register("name")} />
-                                <p>{errors.name?.message}</p>
-
-                            </div>
-                            <div className="my-4 flex flex-col gap-4 justify-center w-full">
-                                <Input size="lg" type="text" label="Nombre de Usuario" name="name" {...register("userName")} />
-                                <p>{errors.userName?.message}</p>
-
-                            </div>
+                        <form className="mt-5 mb-2 " onSubmit={handleSubmit}>
                             <div className="my-4 flex flex-row gap-3 justify-center">
-                                <Input type="text" size="lg" label="Email" name="email" {...register("email")} />
-                                <Input type="number" size="lg" label="Teléfono" name="email" {...register("phone")} />
+                                <Input
+                                    type="text"
+                                    size="lg"
+                                    label="Primer Nombre"
+                                    name="firstname"
+                                    value={newUser.firstname}
+                                    onChange={(e) => {
+                                        setNewUser({
+                                            ...newUser,
+                                            firstname: e.target.value,
+                                        })
+                                    }}
+                                    required
+                                />
+                                <Input
+                                    type="text"
+                                    size="lg"
+                                    label="Primer Apellido"
+                                    name="lastname"
+                                    value={newUser.lastname}
+                                    onChange={(e) => {
+                                        setNewUser({
+                                            ...newUser,
+                                            lastname: e.target.value,
+                                        })
+                                    }}
+                                    required
+                                />
+                            </div>
+
+                            <div className="my-4 flex flex-row gap-3 justify-center">
+                                <Input
+                                    type="email"
+                                    size="lg"
+                                    label="Email"
+                                    name="email"
+                                    value={newUser.email}
+                                    onChange={(e) => {
+                                        setNewUser({
+                                            ...newUser,
+                                            email: e.target.value,
+                                        })
+                                    }}
+                                    required
+                                />
+                                <Input
+                                    type="number"
+                                    size="lg"
+                                    label="Teléfono"
+                                    name="email"
+                                    value={newUser.phone}
+                                    onChange={(e) => {
+                                        setNewUser({
+                                            ...newUser,
+                                            phone: e.target.value,
+                                        })
+                                    }}
+                                    required
+                                />
 
                             </div>
+
+
                             <div className="my-4 flex flex-row gap-4 justify-center">
-                                <p>{errors.password?.message}</p>
-                                <p>{errors.password?.message}</p>
+
+                                <div className="relative flex w-full max-w-[24rem]">
+                                    <Input
+                                        type={isPasswordVisible ? "text" : "password"}
+                                        size="lg"
+                                        label="Password"
+                                        required
+                                        value={newUser.password}
+                                        onChange={(e) =>
+                                            setNewUser({
+                                                ...newUser,
+                                                password: e.target.value,
+                                            })
+                                        }
+                                        containerProps={{
+                                            className: "min-w-0",
+                                        }}
+                                    />
+
+                                    <IconButton
+                                        variant="text"
+                                        className="!absolute right-1 top-1 rounded"
+                                        onClick={togglePasswordVisibility}>
+                                        {isPasswordVisible ? (
+                                            <BsFillEyeSlashFill size={20} />
+                                        ) : (<BsFillEyeFill size={20} />)}
+                                    </IconButton>
+                                </div>
+
+                                <div className="relative flex w-full max-w-[24rem]">
+                                    <Input
+                                        type={isConfigVisible ? "text" : "password"}
+                                        size="lg"
+                                        label="Confirmación"
+                                        required
+                                        value={newUser.conf_pass}
+                                        onChange={(e) =>
+                                            setNewUser({
+                                                ...newUser,
+                                                conf_pass: e.target.value,
+                                            })
+                                        }
+                                        containerProps={{
+                                            className: "min-w-0",
+                                        }}
+                                    />
+                                    <IconButton
+                                        variant="text"
+                                        className="!absolute right-1 top-1 rounded"
+                                        onClick={toggleConfigVisibility}>
+                                        {isConfigVisible ? (
+                                            <BsFillEyeSlashFill size={20} />
+                                        ) : (<BsFillEyeFill size={20} />)}
+                                    </IconButton>
+                                </div>
+
+
                             </div>
 
-                            <div className="my-4 flex flex-row gap-4 justify-center">
-                                <Input type="password" size="lg" label="Contraseña" name="email" {...register("password")} />
-                                <Input type="password" size="lg" label="Confirmación" name="configpass" {...register("configpass")} />
+
+                            <div className="flex flex-col w-full gap-4">
+                                <Typography variant="h6" color="black">Seleccionar Perfile del usuario</Typography>
+                                <Select
+                                    value={newUser.id_profile}
+                                    onChange={(value) =>
+                                        setNewUser({
+                                            ...newUser,
+                                            id_profile: value,
+                                        })
+                                    }
+                                    required
+                                    options={options}
+                                />
                             </div>
 
-                            <Typography variant="small" color="gray" className="flex items-center gap-1 font-normal mt-1">
-                                <InformationCircleIcon className="w-4 h-4 -mt-px" />
-                                La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.
-                            </Typography>
 
-                            <div className="my-4 flex flex-row gap-4 justify-center">
-                                <p>{errors.password?.message}</p>
 
-                                <p>{errors.password?.message}</p>
-                            </div>
 
                             <Button type="submit" className="mt-6" fullWidth >
                                 Registrar
@@ -140,12 +318,17 @@ export default function Register() {
 
                 </Card>
             </div>
-            <div className="container mx-auto my-10 flex justify-center">
-                <Copyright sx={{ mt: 5 }} />
-            </div>
-        </Fragment>
+
+        </Fragment >
 
     );
 }
 
+
+/*
+<Typography variant="small" color="gray" className="flex items-center gap-2 font-normal mt-5">
+                                    <InformationCircleIcon className="w-4 h-4 -mt-px" />
+                                    La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula. Puede tener otros símbolos.
+                                </Typography>
+*/
 

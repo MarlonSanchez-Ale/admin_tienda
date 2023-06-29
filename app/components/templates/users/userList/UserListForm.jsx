@@ -18,10 +18,8 @@ function UserListForm({ updateUsersCallback, user }) {
       titleFileDownload="Reporte de Usuarios"
       titleForm="Listado de Usuarios"
       titleButtonCreate="Nuevo Usuario"
-      urlCreate="/accounts/register"
-      iconButtonCreate={<RiUserAddFill />}
+      urlCreate="/users/create/register"
       hasPermissionCreate="Crear Usuario"
-      buttonDownload={true}
     />
   );
 }

@@ -29,14 +29,11 @@ export default function Home() {
       
         <div className='flex flex-col gap-3'>
           <Typography variant="h1" color="blue-gray" >
-            Material Tailwind
+            Bienvenido
           </Typography>
 
           <Typography>
-            Material Tailwind is an easy to use components library for Tailwind CSS
-            and Material Design. It provides a simple way to customize your
-            components, you can change the colors, fonts, breakpoints and everything
-            you need.
+            Hola  a todos, se estaran realizando cambios en este sitio 
           </Typography>
 
           

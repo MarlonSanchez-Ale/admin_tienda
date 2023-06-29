@@ -5,7 +5,7 @@ import { toastService } from "@/app/services/toast.service";
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import ButtonDownload from "../forms/ButtonDownload";
-import { useHasPermissionStatus } from "app/hook/useHasPermissionStatus";
+import { useHasPermissionStatus } from "@/app/hook/useHasPermissionStatus";
 
 import {
     Navbar,
@@ -13,8 +13,12 @@ import {
     IconButton,
     Button,
     Input,
+    Tooltip
 } from "@material-tailwind/react";
-import { BellIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { BellIcon, Cog6ToothIcon, CloudArrowDownIcon } from "@heroicons/react/24/solid";
+import { RiCloseFill, RiFolderAddFill, RiArrowDownCircleFill } from 'react-icons/ri'
+import Link from "next/link";
+
 
 export default SearchForm;
 
@@ -26,10 +30,7 @@ SearchForm.propTypes = {
     titleForm: PropTypes.string.isRequired,
     titleButtonCreate: PropTypes.string,
     urlCreate: PropTypes.string,
-    iconButtonCreate: PropTypes.object.isRequired,
     hasPermissionCreate: PropTypes.string,
-    selectSorteo: PropTypes.bool,
-    buttonDownload: PropTypes.bool,
     //setUrlDownload: PropTypes.func.isRequired
 };
 
@@ -41,11 +42,8 @@ function SearchForm({
     titleForm,
     titleButtonCreate,
     urlCreate,
-    iconButtonCreate,
     hasPermissionCreate,
-    selectSorteo,
-    buttonDownload,
-    buttonBigDownload }) {
+    }) {
     /**
      * Ya que hay varias vista que comparten esta forma de consultar datos
      * se hizo este componente para reutilizarlo en los sitios donde
@@ -56,7 +54,6 @@ function SearchForm({
      *  url dependiendo de la busqueda.
      */
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [sorteos, setSorteos] = useState([])
 
 
 
@@ -130,38 +127,62 @@ function SearchForm({
 
     return (
         <>
-            <Navbar className="mx-auto max-w-screen-xl px-4 py-3">
-                <div className="flex flex-wrap items-center justify-between gap-y-4 text-blue-gray-900">
+            <Navbar className="mx-auto max-w-screen-xl px-4 py-3" >
+                <form className="flex flex-wrap items-center justify-between gap-y-4 text-blue-gray-900" onSubmit={handleSubmit(onSubmit)}>
                     <Typography
                         as="a"
                         href="#"
                         variant="h6"
                         className="mr-4 ml-2 cursor-pointer py-1.5"
                     >
-                        Buscar Usuarios
+                        {titleForm}
                     </Typography>
                     <div className="ml-auto flex gap-2 md:mr-4">
-                        <IconButton variant="text" color="blue-gray">
-                            <Cog6ToothIcon className="h-4 w-4" />
-                        </IconButton>
-                        <IconButton variant="text" color="blue-gray">
-                            <BellIcon className="h-4 w-4" />
-                        </IconButton>
+                        {hasPermissionNew && (
+                            <Tooltip content={titleButtonCreate}>
+                                <Link href={urlCreate}>
+                                <IconButton variant="text" color="blue-gray" >
+                                    <RiFolderAddFill size={20} />
+                                </IconButton>
+                                </Link>
+                            </Tooltip>
+                        )}
+
+
+                        {dataForm && (
+                            <ButtonDownload jsObjArray={dataForm}
+                                filename={fileNameDownload}
+                                workbookOptions={{ title: titleFileDownload }} />
+                        )}
                     </div>
-                    <div className="relative flex w-full gap-5 md:w-max">
-                        <Input
-                            type="search"
-                            label="Buscar..."
-                            className="pr-20"
-                            containerProps={{
-                                className: "min-w-[288px] mr-2",
-                            }}
-                        />
-                        <Button size="sm" className="!absolute right-1 top-1 rounded">
-                            Search
-                        </Button>
+                    <div className="flex flex-row gap-5 ">
+
+                        <div className="relative flex w-full max-w-[24rem]">
+                            <Input
+                                type="text"
+                                label="Buscar..."
+                                className="pr-20"
+                                containerProps={{
+                                    className: "min-w-0",
+                                }}
+                                {...register("search")}
+
+                            />
+                            <Button
+                                size="sm"
+                                className="!absolute right-1 top-1 rounded"
+                                type="submit"
+                            >
+                                Buscar
+                            </Button>
+                        </div>
+                        <Tooltip content="Borrar">
+                            <IconButton variant="text" color="blue-gray" onClick={onClearSearch}>
+                                <RiCloseFill className="h-4 w-4" />
+                            </IconButton>
+                        </Tooltip>
                     </div>
-                </div>
+                </form>
             </Navbar>
         </>
     )

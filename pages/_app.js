@@ -60,7 +60,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
         <MenuSideBar mainPage={
           <main>
             <ToastTP />
+
             <Component {...pageProps} />
+
           </main>
 
         } />
@@ -69,12 +71,13 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
       {!showMainLayout && (
         <>
           <main>
-            <ToastTP />
             {authorized && (
               <>
                 <Component {...pageProps} />
               </>
             )}
+            <ToastTP />
+
           </main>
         </>
       )}

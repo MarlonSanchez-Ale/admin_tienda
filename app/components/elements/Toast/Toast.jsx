@@ -118,14 +118,14 @@ function ToastTP({ id, fade }) {
 
             {toasts.map((toast, index) =>
 
-                <Collapse open={open}>
-                    <Card className="my-4 mx-auto w-8/12" color={bgClass(toast)}>
-                        <CardBody>
-                            <div className='flex flex-row justify-center gap-5'>
-                                <div>
+                <Collapse open={open} key={index}>
+                    <Card className="my-4 mx-auto w-8/12" color={bgClass(toast)} key={index}>
+                        <CardBody key={index}>
+                            <div className='flex flex-row justify-center gap-5' >
+                                <div >
                                     <InformationCircleIcon className="h-6 w-6" />
                                 </div>
-                                <div>
+                                <div >
                                     <Typography variant="h5" color="white" className="mb-2">
                                         {toast.title}
                                     </Typography>

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "set NODE_OPTIONS=--inspect && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -16,9 +16,11 @@
     "dotenv": "^16.1.4",
     "downloadjs": "^1.4.7",
     "exceljs": "^4.3.0",
+    "express": "^4.18.2",
     "express-jwt": "^8.4.1",
     "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.0",
+    "lottie-react": "^2.4.0",
     "moment": "^2.29.4",
     "mysql2": "^3.3.5",
     "next": "13.4.4",
@@ -33,6 +35,8 @@
     "react-icons": "^4.9.0",
     "react-query": "^3.39.3",
     "react-redux": "^8.1.0",
+    "react-select": "^5.7.3",
+    "react-tailwindcss-select": "^1.8.5",
     "rxjs": "^7.8.1",
     "sequelize": "^6.32.0",
     "sonic-boom": "^3.3.0",
@@ -42,6 +46,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
+    "nodemon": "^2.0.22",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2"
   }

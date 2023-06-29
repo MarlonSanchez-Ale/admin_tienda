@@ -25,8 +25,8 @@ async function handler(req, res) {
                 USUARIO: p.user_name,
                 NOMBRE: p.name,
                 EMAIL: p.email,
-                TELEFONO: p.PHONE,
-                ESTADO: p.STATUS
+                TELEFONO: p.phone,
+                ESTADO: p.status
             }))
         });
     }

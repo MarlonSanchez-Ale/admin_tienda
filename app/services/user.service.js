@@ -19,10 +19,12 @@ export const userService = {
   register,
   getProfiles,
   getUserById,
-  changePassword,
-  changeProfile,
+  resetPassword,
+  editUser,
   DisableUser,
-  hasPermissionTo
+  hasPermissionTo,
+  getUserProfileById,
+  EditProfile
 };
 
 function login(credentialsSession) {
@@ -67,20 +69,28 @@ function getUserById(id_user) {
   return fetchWrapper.get(`${baseUrl}/details/${id_user}`);
 }
 
+function getUserProfileById(user_name) {
+  return fetchWrapper.get(`${baseUrl}/details_profile/${user_name}`);
+}
+
 function register(user) {
   return fetchWrapper.post(`${baseUrl}/register`, user);
 }
 
 function getProfiles() {
-  return fetchWrapper.get(`${baseUrl}/profiles`);
+  return fetchWrapper.get(`${baseUrl}/profile`);
 }
 
-function changePassword(data) {
-  return fetchWrapper.put(`${baseUrl}/edit/ChangePassword`, data);
+function resetPassword(data) {
+  return fetchWrapper.put(`${baseUrl}/edit/ResetPassword`, data);
 }
 
-function changeProfile(data) {
-  return fetchWrapper.put(`${baseUrl}/edit/ChangeProfile`, data);
+function editUser(data) {
+  return fetchWrapper.put(`${baseUrl}/edit/EditUser`, data);
+}
+
+function EditProfile(data) {
+  return fetchWrapper.put(`${baseUrl}/edit/EditProfile`, data);
 }
 
 function DisableUser(id_user) {

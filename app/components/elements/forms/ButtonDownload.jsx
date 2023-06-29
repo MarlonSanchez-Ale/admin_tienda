@@ -2,7 +2,7 @@
 import { toastService } from '@/app/services/toast.service';
 import { useState } from 'react';
 import { Tooltip, IconButton } from "@material-tailwind/react";
-import { RiArrowDownCircleLine } from "react-icons/ri";
+import { RiArrowDownCircleFill } from "react-icons/ri";
 
 const download = require('downloadjs');
 export default ButtonDownload;
@@ -36,10 +36,11 @@ function ButtonDownload({ jsObjArray, filename, workbookOptions }) {
 
 
     return (
-        <Tooltip title="Descargar">
-            <IconButton color='green' onClick={handleClick}>
-                <RiArrowDownCircleLine />
+        <Tooltip content="Descargar">
+            <IconButton variant="text" color="blue-gray" onClick={handleClick}>
+                <RiArrowDownCircleFill size={20} />
             </IconButton>
         </Tooltip>
     )
 }
+

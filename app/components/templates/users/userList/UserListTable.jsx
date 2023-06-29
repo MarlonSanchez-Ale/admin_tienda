@@ -1,7 +1,11 @@
 import * as React from 'react';
 import PropTypes from "prop-types";
 import { useHasPermissionStatus } from '@/app/hook/useHasPermissionStatus';
-import { Card, Typography } from "@material-tailwind/react";
+import { Card, Typography, Alert, IconButton, Tooltip } from "@material-tailwind/react";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
+import { RiEdit2Line, RiEraserLine, RiSearchEyeLine } from "react-icons/ri";
+import DisableUser from '../disableUser';
+import Link from 'next/link';
 
 export { UserListTable }
 
@@ -14,7 +18,7 @@ UserListTable.propTypes = {
 function UserListTable({ users, deleteUserCallback }) {
     const hasPermissionDeleteUsers = useHasPermissionStatus("Eliminar Usuario")
 
-    const TABLE_HEAD = ["USER CREADOR", "USUARIO EDITOR", "FECHA CREACIÓN", "FECHA EDICIÓN", "USUARIO", "NOMBRE", "EMAIL", "TELÉFONO", "ESTADO"];
+    const TABLE_HEAD = ["USER CREADOR", "USUARIO EDITOR", "FECHA CREACIÓN", "FECHA EDICIÓN", "USUARIO", "NOMBRE", "EMAIL", "TELÉFONO", "ESTADO", "OPCIONES"];
 
 
     return (
@@ -37,7 +41,7 @@ function UserListTable({ users, deleteUserCallback }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {users &&  users.map(({ USER_CREATE, USER_UPDATE, FECHA_CREADO, FECHA_EDITADO, ID_USUARIO, USUARIO,  NOMBRE, EMAIL, TELEFONO, ESTADO}, index) => (
+                        {users && users.map(({ USER_CREATE, USER_UPDATE, FECHA_CREADO, FECHA_EDITADO, ID_USUARIO, USUARIO, NOMBRE, EMAIL, TELEFONO, ESTADO }, index) => (
                             <tr key={index} className="even:bg-blue-gray-50/50">
                                 <td className="p-4">
                                     <Typography variant="small" color="blue-gray" className="font-normal">
@@ -81,13 +85,45 @@ function UserListTable({ users, deleteUserCallback }) {
                                 </td>
                                 <td className="p-4">
                                     <Typography as="a" href="#" variant="small" color="blue" className="font-medium">
-                                        Edit
+                                        {ESTADO}
                                     </Typography>
+                                </td>
+                                <td>
+                                    <div className='flex flex-row justify-center gap-2'>
+                                        <Tooltip content="Detalle">
+                                            <Link href={`/users/details/${ID_USUARIO}`}>
+                                                <IconButton variant="outlined">
+                                                    <RiSearchEyeLine size={20} />
+                                                </IconButton>
+                                            </Link>
+                                        </Tooltip>
+                                        <DisableUser
+                                            callbackDelete={() => {
+                                                return deleteUserCallback(ID_USUARIO);
+                                            }} />
+                                    </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+
+                {!users &&
+                    <div role="status" className="space-y-2.5 animate-pulse w-full p-20">
+                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[800px] mb-2.5 mx-auto"></div>
+                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[800px] mb-2.5 mx-auto"></div>
+                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[800px] mb-2.5 mx-auto"></div>
+                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[800px] mb-2.5 mx-auto"></div>
+                    </div>
+                }
+
+                {users && !users.length && (
+                    <Alert
+                        icon={<ExclamationTriangleIcon className="mt-px h-6 w-6" />}
+                        className="bg-[#e8d7d7] text-[#ff3939] border-l-4 border-[#c92e2e] rounded-none font-medium">
+                        No hay datos para mostrar.
+                    </Alert>
+                )}
             </Card>
         </>
     )

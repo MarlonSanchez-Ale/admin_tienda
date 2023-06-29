@@ -21,6 +21,8 @@ const User_Profile = config.define('user_profile', {
         unique: true,
     },
 }, {
+    modelName: 'user_profile',
+    tableName: 'user_profile',
     timestamps: false
 });
 

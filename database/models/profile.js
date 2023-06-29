@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const config = require('../config');
 
+
 const Profile = config.define('profile', {
     user_create: {
         type: Sequelize.STRING(15),
@@ -21,7 +22,7 @@ const Profile = config.define('profile', {
         allowNull: false,
     },
     id_profile: {
-        type: Sequelize.STRING(15),
+        type: Sequelize.STRING(40),
         allowNull: false,
         primaryKey: true
     },
@@ -36,11 +37,14 @@ const Profile = config.define('profile', {
         unique: true,
     },
     status: {
-        type: Sequelize.STRING(15),
+        type: Sequelize.STRING(20),
         allowNull: false,
     },
 }, {
+    modelName: 'profile',
+    tableName: 'profile',
     timestamps: false
-});
+})
+
 
 module.exports = Profile;
