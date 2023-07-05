@@ -3,23 +3,24 @@ import PropTypes from "prop-types";
 import { useHasPermissionStatus } from '@/app/hook/useHasPermissionStatus';
 import { Card, Typography, Alert, IconButton, Tooltip } from "@material-tailwind/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
-import { RiEdit2Line, RiEraserLine, RiSearchEyeLine } from "react-icons/ri";
-import DisableButton from '@/app/components/elements/forms/disableButton';
+import EditCategory from '../EditCategory';
 import Link from 'next/link';
+import DisableButton from '@/app/components/elements/forms/disableButton';
 
-export { UserListTable }
+export { CategoryListTable };
 
-UserListTable.propTypes = {
-    users: PropTypes.array,
+CategoryListTable.propTypes = {
+    categorys: PropTypes.array,
+    getCategoryCallBack: PropTypes.func.isRequired,
     //urlDownload: PropTypes.string,
-    deleteUserCallback: PropTypes.func.isRequired,
+    deleteCategoryCallBack: PropTypes.func.isRequired,
 };
 
-function UserListTable({ users, deleteUserCallback }) {
-    const hasPermissionDeleteUsers = useHasPermissionStatus("Eliminar Usuario")
 
-    const TABLE_HEAD = ["USER CREADOR", "USUARIO EDITOR", "FECHA CREACIÓN", "FECHA EDICIÓN", "USUARIO", "NOMBRE", "EMAIL", "TELÉFONO", "ESTADO", "OPCIONES"];
+function CategoryListTable({ categorys, getCategoryCallBack, deleteCategoryCallback }) {
+    //const hasPermissionDeleteUsers = useHasPermissionStatus("Eliminar Usuario")
 
+    const TABLE_HEAD = ["USER CREADOR", "USUARIO EDITOR", "FECHA CREACIÓN", "FECHA EDICIÓN", "CATEGORÍA", "DESCRIPCIÓN", "ESTADO", "OPCIONES"];
 
     return (
         <>
@@ -41,10 +42,10 @@ function UserListTable({ users, deleteUserCallback }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {users && users.map(({ USER_CREATE, USER_UPDATE, FECHA_CREADO, FECHA_EDITADO, ID_USUARIO, USUARIO, NOMBRE, EMAIL, TELEFONO, ESTADO }, index) => (
+                        {categorys && categorys.map(({ USER_CREATE, USER_UPDATE, FECHA_CREADO, FECHA_EDITADO, ID_CATEGORIA, CATEGORIA, DESCRIPCION, ESTADO }, index) => (
                             <tr key={index} className="even:bg-blue-gray-50/50">
                                 <td className="p-4">
-                                    <Link href={`/users/details/${ID_USUARIO}`}>
+                                    <Link href={`/categorys/details/${ID_CATEGORIA}`}>
                                         <Typography variant="small" color="blue-gray" className="font-normal">
                                             {USER_CREATE}
                                         </Typography>
@@ -67,22 +68,12 @@ function UserListTable({ users, deleteUserCallback }) {
                                 </td>
                                 <td className="p-4">
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {USUARIO}
+                                        {CATEGORIA}
                                     </Typography>
                                 </td>
                                 <td className="p-4">
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {NOMBRE}
-                                    </Typography>
-                                </td>
-                                <td className="p-4">
-                                    <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {EMAIL}
-                                    </Typography>
-                                </td>
-                                <td className="p-4">
-                                    <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {TELEFONO ? TELEFONO : "Sin dato"}
+                                        {DESCRIPCION}
                                     </Typography>
                                 </td>
                                 <td className="p-4">
@@ -92,16 +83,10 @@ function UserListTable({ users, deleteUserCallback }) {
                                 </td>
                                 <td>
                                     <div className='flex flex-row justify-center gap-2'>
-                                        <Tooltip content="Detalle">
-                                            <Link href={`/users/details/${ID_USUARIO}`}>
-                                                <IconButton variant="outlined">
-                                                    <RiSearchEyeLine size={20} />
-                                                </IconButton>
-                                            </Link>
-                                        </Tooltip>
+                                        <EditCategory id_category={ID_CATEGORIA} name={CATEGORIA} description={DESCRIPCION} callback={getCategoryCallBack}/>
                                         <DisableButton
                                             callbackDelete={() => {
-                                                return deleteUserCallback(ID_USUARIO);
+                                                return deleteCategoryCallback(ID_CATEGORIA);
                                             }} />
                                     </div>
                                 </td>
@@ -110,7 +95,7 @@ function UserListTable({ users, deleteUserCallback }) {
                     </tbody>
                 </table>
 
-                {!users &&
+                {!categorys &&
                     <div role="status" className="space-y-2.5 animate-pulse w-full p-20">
                         <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[800px] mb-2.5 mx-auto"></div>
                         <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[800px] mb-2.5 mx-auto"></div>
@@ -119,7 +104,7 @@ function UserListTable({ users, deleteUserCallback }) {
                     </div>
                 }
 
-                {users && !users.length && (
+                {categorys && !categorys.length && (
                     <Alert
                         icon={<ExclamationTriangleIcon className="mt-px h-6 w-6" />}
                         className="bg-[#e8d7d7] text-[#ff3939] border-l-4 border-[#c92e2e] rounded-none font-medium">

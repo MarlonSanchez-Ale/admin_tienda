@@ -106,7 +106,7 @@ export default function MenuSideBar(props) {
                 </div>
 
 
-                <Drawer open={on} onClose={closeDrawer}>
+                <Drawer open={on} onClose={closeDrawer} className="overflow-auto ">
                     <div className="flex justify-end p-5">
                         <IconButton onClick={closeDrawer} color="blue" size="lg" >
                             <RiArrowLeftCircleFill size={20} />
@@ -260,7 +260,7 @@ export default function MenuSideBar(props) {
                                             </Link>
                                         )}
                                         {hasPermissionListCategory && (
-                                            <Link href="">
+                                            <Link href="/categorys/">
                                                 <ListItem>
                                                     <ListItemPrefix>
                                                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -270,7 +270,7 @@ export default function MenuSideBar(props) {
                                             </Link>
                                         )}
                                         {hasPermissionRegisterCategory && (
-                                            <Link href="">
+                                            <Link href="/categorys/create">
                                                 <ListItem>
                                                     <ListItemPrefix>
                                                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />

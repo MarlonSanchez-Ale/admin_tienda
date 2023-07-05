@@ -14,11 +14,11 @@ import { BellIcon } from "@heroicons/react/24/solid";
 import { RiEraserLine } from "react-icons/ri";
 import PropTypes from "prop-types";
 
-DisableUser.propTypes = {
+DisableButton.propTypes = {
     callbackDelete: PropTypes.func.isRequired,
 };
 
-export default function DisableUser({ callbackDelete }) {
+export default function DisableButton({ callbackDelete }) {
     const [open, setOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 

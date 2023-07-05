@@ -13,15 +13,11 @@ import {
 import { BsPersonCircle } from 'react-icons/bs'
 import Link from "next/link";
 import { useRouter } from 'next/router';
-import { InformationCircleIcon } from "@heroicons/react/24/solid"
 import { userService } from "@/app/services/user.service";
 import { toastService } from "@/app/services/toast.service";
-import { BellIcon } from "@heroicons/react/24/solid";
-import { ClockIcon } from "@heroicons/react/24/outline";
 import Select from "react-tailwindcss-select";
-import { InformationCircleIcon as InformationCircleIconSolid } from "@heroicons/react/24/solid"
 import { BsFillEyeFill, BsFillEyeSlashFill } from "react-icons/bs";
-import ToastTP from "@/app/components/elements/Toast/Toast";
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 import { Fragment } from "react";
 
@@ -157,6 +153,16 @@ export default function Register() {
                         <Typography color="white" className="mt-1 font-normal">
                             Agrega tus datos e ingresa
                         </Typography>
+
+                        <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
+                            <Link href="/users/">
+                                <Tooltip content="ir a lista">
+                                    <IconButton>
+                                        <RiLogoutBoxLine size={20} />
+                                    </IconButton>
+                                </Tooltip>
+                            </Link>
+                        </div>
                     </CardHeader>
                     <CardBody className="flex justify-center">
 

@@ -15,6 +15,10 @@ module.exports = withMT({
   ],
   theme: {
     extend: {},
+    screens: {
+      sm: "640px",
+      // rest of the breakpoints
+    },
   },
   plugins: [],
 });
