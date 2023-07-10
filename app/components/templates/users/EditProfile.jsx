@@ -77,7 +77,7 @@ export default function EditProfile({ id_user, user_name, user_profile, callback
         //handleCancel();
     }
 
- 
+
 
     const options = [];
 
@@ -156,9 +156,14 @@ export default function EditProfile({ id_user, user_name, user_profile, callback
                             </div>
                         </CardBody>
                         <CardFooter className="pt-0">
-                            <Button variant="gradient" type="submit" fullWidth>
-                                Guardar
-                            </Button>
+                            <div className="flex flex-row gap-2 justify-center">
+                                <Button color="red"  fullWidth onClick={handleOpen}>
+                                    Cancelar
+                                </Button>
+                                <Button variant="gradient" type="submit" fullWidth>
+                                    Guardar
+                                </Button>
+                            </div>
 
                             {viewMessage ? (
                                 <>

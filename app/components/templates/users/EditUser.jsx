@@ -33,7 +33,7 @@ export default function EditUser({ id_user, user_name, name, email, phone, callb
     })
     const [viewMessage, setViewMessage] = useState(false)
 
-   
+
     const arr = name ? name[0]?.split(' ') : "";
 
 
@@ -208,10 +208,14 @@ export default function EditUser({ id_user, user_name, name, email, phone, callb
 
                         </CardBody>
                         <CardFooter className="pt-0">
-                            <Button variant="gradient" type="submit" fullWidth>
-                                Guardar
-                            </Button>
-
+                            <div className="flex flex-row gap-2 justify-center">
+                                <Button color="red" fullWidth onClick={handleOpen}>
+                                    Cancelar
+                                </Button>
+                                <Button variant="gradient" type="submit" fullWidth>
+                                    Guardar
+                                </Button>
+                            </div>
                             {viewMessage ? (
                                 <>
                                     <Typography variant="h6" className="mt-3">{message.tittle}</Typography>

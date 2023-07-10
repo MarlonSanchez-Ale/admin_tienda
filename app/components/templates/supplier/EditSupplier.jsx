@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
-import { categoryService } from "@/app/services/category.service";
+import { supplierService } from "@/app/services/supplier.service";
 import { toastService } from "@/app/services/toast.service";
-import { Fragment } from "react";
 import { RiDashboardLine, RiPencilFill } from "react-icons/ri";
 import PropTypes from "prop-types";
 import {
@@ -15,14 +14,21 @@ import {
     Textarea,
     Tooltip,
     IconButton,
-    Dialog 
+    Dialog
 } from "@material-tailwind/react";
 
-EditCategory.prototype = {
-    callback: PropTypes.func.isRequired
+EditSupplier.prototype = {
+    callback: PropTypes.func.isRequired,
+    id_supplier: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    phone: PropTypes.number.isRequired
+
+
 }
 
-export default function EditCategory({ id_category, name, description, callback }) {
+export default function EditSupplier({ id_supplier, name, description, address, phone, callback }) {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen((cur) => !cur);
@@ -33,18 +39,20 @@ export default function EditCategory({ id_category, name, description, callback 
     })
     const [viewMessage, setViewMessage] = useState(false)
 
-    const [editCategory, setEditCategory] = useState({
-        id_category: id_category ? id_category : "",
+    const [editSupplier, setEditSupplier] = useState({
+        id_supplier: id_supplier ? id_supplier : "",
         name: name ? name : "",
         description: description ? description : "",
+        address: address ? address : "",
+        phone: phone ? phone : "",
     });
 
- 
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        return categoryService.edit(editCategory)
+        return supplierService.edit(editSupplier)
             .then((res) => {
                 toastService.success(res.title, res.message, {
                     keepAfterRouteChange: true,
@@ -98,24 +106,24 @@ export default function EditCategory({ id_category, name, description, callback 
                             <RiDashboardLine size={50} />
                         </div>
                         <Typography variant="h4" color="white">
-                            Crear Categoría
+                            Editar Proveedor
                         </Typography>
                         <Typography color="white" className="mt-1 font-normal">
-                            Agregar los datos de la categoría
+                            Agregar los datos del proveedor
                         </Typography>
                     </CardHeader>
                     <CardBody >
                         <form className="my-5 gap-3" onSubmit={handleSubmit}>
-                            <div className="flex flex-col justify-center gap-4">
+                            <div className="my-2 flex flex-col gap-4 justify-center">
                                 <Input
                                     type="text"
                                     size="lg"
-                                    label="Categoría"
-                                    name="category"
-                                    defaultValue={editCategory.name}
+                                    label="Nombre de Proveedor"
+                                    name="name"
+                                    value={editSupplier.name}
                                     onChange={(e) => {
-                                        setEditCategory({
-                                            ...editCategory,
+                                        setEditSupplier({
+                                            ...editSupplier,
                                             name: e.target.value,
                                         })
                                     }}
@@ -126,17 +134,49 @@ export default function EditCategory({ id_category, name, description, callback 
                                     size="lg"
                                     label="Descripción"
                                     name="description"
-                                    defaultValue={editCategory.description}
+                                    value={editSupplier.description}
                                     onChange={(e) => {
-                                        setEditCategory({
-                                            ...editCategory,
+                                        setEditSupplier({
+                                            ...editSupplier,
                                             description: e.target.value,
+                                        })
+                                    }}
+                                    required
+                                />
+                            </div>
+
+                            <div className="my-4 flex flex-col gap-3 justify-center">
+                                <Input
+                                    type="text"
+                                    size="lg"
+                                    label="Dirección"
+                                    name="address"
+                                    value={editSupplier.address}
+                                    onChange={(e) => {
+                                        setEditSupplier({
+                                            ...editSupplier,
+                                            address: e.target.value,
+                                        })
+                                    }}
+                                    required
+                                />
+                                <Input
+                                    type="number"
+                                    size="lg"
+                                    label="Teléfono"
+                                    name="email"
+                                    value={editSupplier.phone}
+                                    onChange={(e) => {
+                                        setEditSupplier({
+                                            ...editSupplier,
+                                            phone: e.target.value,
                                         })
                                     }}
                                     required
                                 />
 
                             </div>
+
                             <div className="flex flex-row gap-2 justify-center">
                                 <Button color="red"  fullWidth onClick={handleOpen}>
                                     Cancelar
@@ -145,6 +185,7 @@ export default function EditCategory({ id_category, name, description, callback 
                                     Guardar
                                 </Button>
                             </div>
+
                             {viewMessage ? (
                                 <>
                                     <Typography variant="h6" className="mt-3">{message.tittle}</Typography>

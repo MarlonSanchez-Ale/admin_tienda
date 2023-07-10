@@ -279,28 +279,8 @@ export default function MenuSideBar(props) {
                                                 </ListItem>
                                             </Link>
                                         )}
-                                        {hasPermissionListBuy && (
-                                            <Link href="">
-                                                <ListItem>
-                                                    <ListItemPrefix>
-                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                                                    </ListItemPrefix>
-                                                    Listar Compra
-                                                </ListItem>
-                                            </Link>
-                                        )}
-                                        {hasPermissionRegisterBuy && (
-                                            <Link href="">
-                                                <ListItem>
-                                                    <ListItemPrefix>
-                                                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                                                    </ListItemPrefix>
-                                                    Registrar Compra
-                                                </ListItem>
-                                            </Link>
-                                        )}
                                         {hasPermissionListSupplier && (
-                                            <Link href="">
+                                            <Link href="/supplier/">
                                                 <ListItem>
                                                     <ListItemPrefix>
                                                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
