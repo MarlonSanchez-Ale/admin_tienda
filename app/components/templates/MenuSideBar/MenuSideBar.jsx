@@ -194,7 +194,7 @@ export default function MenuSideBar(props) {
                                             </Link>
                                         )}
                                         {hasPermissionSalesPoint && (
-                                            <Link href="">
+                                            <Link href="/PointsSales/">
                                                 <ListItem>
                                                     <ListItemPrefix>
                                                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -290,7 +290,7 @@ export default function MenuSideBar(props) {
                                             </Link>
                                         )}
                                         {hasPermissionRegisterSupplier && (
-                                            <Link href="">
+                                            <Link href="/supplier/register">
                                                 <ListItem>
                                                     <ListItemPrefix>
                                                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />

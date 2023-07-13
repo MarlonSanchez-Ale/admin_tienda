@@ -38,7 +38,7 @@ const Point_Sales = config.define('point_sales', {
         type: Sequelize.INTEGER
     },
     status: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(15),
         allowNull: false
     }
 }, {
