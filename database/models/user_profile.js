@@ -4,7 +4,6 @@ import User from './user';
 import Profile from './profile';
 
 const User_Profile = config.define('user_profile', {
-    
     id_user_profile: {
         type: Sequelize.STRING(15),
         allowNull: false,

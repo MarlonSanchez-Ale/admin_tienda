@@ -9,8 +9,6 @@ const Supplier = config.define('supplier', {
     user_update: {
         type: Sequelize.STRING(15),
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
     },
     date_create: {
         type: Sequelize.DATE,

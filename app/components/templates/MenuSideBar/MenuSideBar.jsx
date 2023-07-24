@@ -241,7 +241,7 @@ export default function MenuSideBar(props) {
                                 </ListItem>
                                 <AccordionBody className="py-1">
                                     <List className="p-0">
-                                        <Link href="/stock/">
+                                        <Link href="/products/">
                                             <ListItem>
                                                 <ListItemPrefix>
                                                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -250,7 +250,7 @@ export default function MenuSideBar(props) {
                                             </ListItem>
                                         </Link>
                                         {hasPermissionRegisterProducts && (
-                                            <Link href="">
+                                            <Link href="/products/register/">
                                                 <ListItem>
                                                     <ListItemPrefix>
                                                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -303,7 +303,7 @@ export default function MenuSideBar(props) {
                                 </AccordionBody>
                             </Accordion>
                         )}
-                        {hasPermissionListBills && (
+                        { /*hasPermissionListBills && (
                             <Accordion
                                 open={open === 3}
                                 icon={
@@ -350,7 +350,7 @@ export default function MenuSideBar(props) {
                                     </List>
                                 </AccordionBody>
                             </Accordion>
-                        )}
+                                        )*/}
                         {hasPermissionListUser && (
                             <Accordion
                                 open={open === 4}

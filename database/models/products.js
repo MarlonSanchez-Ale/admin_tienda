@@ -9,8 +9,6 @@ const Products = config.define('products', {
     user_update: {
         type: Sequelize.STRING(15),
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
     },
     date_create: {
         type: Sequelize.DATE,
@@ -34,10 +32,6 @@ const Products = config.define('products', {
     },
     description: {
         type: Sequelize.STRING(150),
-        allowNull: false
-    },
-    purchase_price: {
-        type: Sequelize.INTEGER,
         allowNull: false
     },
     sale_price: {

@@ -45,11 +45,9 @@ function CategoryListTable({ categorys, getCategoryCallBack, deleteCategoryCallb
                         {categorys && categorys.map(({ USER_CREATE, USER_UPDATE, FECHA_CREADO, FECHA_EDITADO, ID_CATEGORIA, CATEGORIA, DESCRIPCION, ESTADO }, index) => (
                             <tr key={index} className="even:bg-blue-gray-50/50">
                                 <td className="p-4">
-                                    <Link href={`/categorys/details/${ID_CATEGORIA}`}>
                                         <Typography variant="small" color="blue-gray" className="font-normal">
                                             {USER_CREATE}
                                         </Typography>
-                                    </Link>
                                 </td>
                                 <td className="p-4">
                                     <Typography variant="small" color="blue-gray" className="font-normal">

@@ -10,8 +10,6 @@ const Sales = config.define('sales', {
     user_update: {
         type: Sequelize.STRING(15),
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
     },
     date_create: {
         type: Sequelize.DATE,

@@ -1,10 +1,5 @@
-import { userService } from "@/app/services/user.service";
 import Link from "next/link";
-const moment = require("moment");
 import { Fragment } from "react";
-
-//import ResetPassword from "./ResetPassword";
-//import EditProfile from "./EditProfile";
 import { useHasPermissionStatus } from "@/app/hook/useHasPermissionStatus";
 
 import {
@@ -16,78 +11,133 @@ import {
     List,
     ListItem,
     ListItemPrefix,
-    Avatar,
-    Accordion,
-    AccordionHeader,
-    AccordionBody,
     Tooltip,
     IconButton
 } from "@material-tailwind/react";
-import { RiAccountPinCircleFill, RiLogoutBoxLine, RiPencilFill, RiRefreshLine } from "react-icons/ri";
+import { RiLogoutBoxLine, RiDashboardLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import { RiKey2Fill } from "react-icons/ri";
-import ResetPassword from "./ResetPassword";
-import EditUser from "./editUser";
-import ToastTP from "../../elements/Toast/Toast";
-import EditProfile from "./EditProfile";
-
-
+import EditProduct from "./editProducts";
+import EditCatProduct from "./editCatProduct";
 
 export { Details }
 
 function Details(props) {
-    const user = props?.user?.usuario;
+    const products = props?.products?.producto;
     const functionCallback = props?.callback;
 
-    const user_details = user.dataUser;
-    const profile_details = user.dataProfile;
+    const product_details = products.dataProducts;
 
-    const hasPermissionUpdateUsers = useHasPermissionStatus("Editar Usuario")
-    const [profile, setProfile] = useState([])
-
-
-    const user_name = user_details.map((u) => {
-        return u.user_name
-    })
-
-    const name = user_details.map((u) => {
-        return u.name
-    })
-
-    const email = user_details.map((a) => {
-        return a.email
-    })
-
-    const phone = user_details.map((a) => {
-        return a.phone
-    })
-
-    const user_profile = user_details.map((m) => {
-        return m.profile
-    })
-
-    const user_id = user_details.map((u) => {
-        return u.id_users
-    })
-
-    const id_profile = user_details.map((u) => {
-        return u.id_profile
-    })
-
-
-    if (!user) return null
-
-    const [open, setOpen] = useState(1);
-
-    const handleOpen = (value) => {
-        setOpen(open === value ? 0 : value);
-    };
-
+    const hasPermissionUpdate = useHasPermissionStatus("Editar Producto")
 
     return (
         <Fragment>
+            {product_details.map(({ ID_PRODUCTO, IMAGEN, PRODUCTO, DESCRIPCION, PRECIO_VENTA, INVENTARIO, ID_CATEGORIA, CATEGORIA, DESCRIPCION_CATEGORIA }, index) => (
+                <div className="container flex justify-center" key={index}>
+                    <Card className="w-full max-w-[30rem]">
+                        <CardHeader
+                            color="blue"
+                            floated={false}
+                            shadow={false}
+                            key={index}
+                            className="m-0 grid place-items-center rounded-b-none py-8 px-4 text-center"
+                        >
+                            <div className="mb-4 rounded-full border border-white/10 bg-white/10 p-6 text-white" key={index}>
+                                <RiDashboardLine size={50} />
+                            </div>
+                            <Typography variant="h4" color="white">
+                                Detalle de Producto
+                            </Typography>
+                            <Typography color="white" className="mt-1 font-normal">
+                                Información del producto y categoría.
+                            </Typography>
 
-            <div className="container flex justify-center">
+                            <div className="group mt-8 inline-flex flex-wrap items-center gap-3" key={index}>
+                                <Link href="/products/">
+                                    <Tooltip content="Regresar a lista">
+                                        <IconButton>
+                                            <RiLogoutBoxLine size={20} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Link>
+                                {hasPermissionUpdate && (
+                                    <>
+                                        <EditProduct id_products={ID_PRODUCTO} name={PRODUCTO} description={DESCRIPCION} sale_price={PRECIO_VENTA} callback={functionCallback}/>
+                                        <EditCatProduct id_products={ID_PRODUCTO} id_category={ID_CATEGORIA} categoria={CATEGORIA} callback={functionCallback} />
+                                    </>
+                                )}
+
+                            </div>
+                        </CardHeader>
+                        <CardBody className="flex justify-center flex-col gap-4"  key={index}>
+                            <form className="mt-5 mb-2" key={index}>
+                                <div className="my-2 flex flex-col gap-4 justify-center">
+                                    <Input
+                                        type="text"
+                                        size="lg"
+                                        label="Nombre de Producto"
+                                        name="firstname"
+                                        value={PRODUCTO}
+                                        readOnly
+                                    />
+
+                                    <Input
+                                        type="email"
+                                        size="lg"
+                                        label="Descripción"
+                                        name="email"
+                                        value={DESCRIPCION}
+                                        readOnly
+                                    />
+                                    <Input
+                                        type="number"
+                                        size="lg"
+                                        label="Precio de Venta"
+                                        name="phone"
+                                        value={PRECIO_VENTA}
+                                        readOnly
+                                    />
+                                    <Input
+                                        type="number"
+                                        size="lg"
+                                        label="Cantidad de Producto"
+                                        name="phone"
+                                        value={INVENTARIO}
+                                        readOnly
+                                    />
+                                </div>
+
+                                <List className="overflow-auto max-h-[20rem] mt-5">
+                                    <Typography variant="h5" color="black">
+                                        Categoría de Producto
+                                    </Typography>
+                                    <ListItem key={index}>
+                                        <ListItemPrefix>
+                                            <RiKey2Fill size={30} />
+                                        </ListItemPrefix>
+                                        <div>
+                                            <Typography variant="h6" color="blue-gray">
+                                                {CATEGORIA}
+                                            </Typography>
+                                            <Typography variant="small" color="gray" className="font-normal">
+                                                {DESCRIPCION_CATEGORIA}
+                                            </Typography>
+                                        </div>
+                                    </ListItem>
+                                </List>
+                            </form>
+
+                        </CardBody>
+                    </Card>
+                </div>
+            ))}
+
+        </Fragment >
+    )
+}
+
+/*
+<div className="container flex justify-center">
                 <Card className="w-full max-w-[30rem]">
                     <CardHeader
                         color="blue"
@@ -200,7 +250,4 @@ function Details(props) {
                 </Card>
             </div>
 
-        </Fragment >
-    )
-}
-
+*/

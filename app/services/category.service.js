@@ -3,13 +3,14 @@ import { fetchWrapper } from "../helpers/fetch-wrapper";
 const baseUrl = `/api/categorys`;
 
 export const categoryService = {
-    getCategory,
+    getCategorys,
+    get,
     create,
     edit,
     disable
 }
 
-function getCategory(filters = {}) {
+function get(filters = {}) {
     return fetchWrapper.get(
         `${baseUrl}?filters=${encodeURIComponent(JSON.stringify(filters))}`
     );
@@ -25,4 +26,8 @@ function edit(data) {
 
   function disable(id_category) {
     return fetchWrapper.put(`${baseUrl}/disable/${id_category}`);
+  }
+
+  function getCategorys(){
+    return fetchWrapper.get(`${baseUrl}`);
   }

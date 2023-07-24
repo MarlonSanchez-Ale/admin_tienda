@@ -4,21 +4,11 @@ import Products from '@/database/models/products'
 import Supplier from '@/database/models/supplier'
 
 const Purchase = config.define('purchase', {
-    user_create: {
+    user_register: {
         type: Sequelize.STRING(15),
         allowNull: false,
     },
-    user_update: {
-        type: Sequelize.STRING(15),
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    date_create: {
-        type: Sequelize.DATE,
-        allowNull: false,
-    },
-    date_update: {
+    date_purchase: {
         type: Sequelize.DATE,
         allowNull: false,
     },

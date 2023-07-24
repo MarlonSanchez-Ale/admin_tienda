@@ -10,8 +10,6 @@ const Point_Sales = config.define('point_sales', {
     user_update: {
         type: Sequelize.STRING(15),
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
     },
     date_create: {
         type: Sequelize.DATE,

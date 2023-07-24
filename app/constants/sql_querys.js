@@ -33,6 +33,19 @@ export const searchUserProfile = (searchString) => {
       `;
 };
 
+export const searchProducts = (searchString) => {
+    return `
+    SELECT  p.id_products as ID_PRODUCTO, p.image as IMAGEN,  p.name as PRODUCTO, p.description as DESCRIPCION, p.sale_price as PRECIO_VENTA, p.stock as INVENTARIO, c.id_category as ID_CATEGORIA, c.name as CATEGORIA, c.description as DESCRIPCION_CATEGORIA
+    FROM products p
+        INNER JOIN details_products dp 
+            ON p.id_products  = dp.id_products  
+        INNER JOIN  category c 
+        	ON c.id_category = dp.id_category 
+    where p.id_products  LIKE '%${searchString}%'
+    ORDER BY p.status ;
+      `;
+};
+
 export const searchProfilePermission = (searchString) => {
     return `
     SELECT PD.id_permission , PD.permission , PD.de_permission 

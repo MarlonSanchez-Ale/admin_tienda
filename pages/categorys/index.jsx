@@ -11,7 +11,7 @@ function ListCategory() {
 
     function getCategoryCallback(filters) {
         setCategory(null);
-        return categoryService.getCategory(filters)
+        return categoryService.get(filters)
             .then(u => {
                 setCategory(u.category)
             })
