@@ -4,7 +4,7 @@ import { Op, QueryTypes } from 'sequelize';
 import Products from '@/database/models/products'
 import Category from '@/database/models/category'
 import Details_Products from '@/database/models/details_products'
-import { searchProducts } from "@/app/constants/sql_querys";
+import { searchProducts, searchProductsPurchase } from "@/app/constants/sql_querys";
 
 export default apiHandler(handler);
 
@@ -25,10 +25,12 @@ function handler(req, res) {
 
         const products = await sequelize.query(`${searchProducts(id_products)}`, { type: QueryTypes.SELECT });
 
+        const purchase = await sequelize.query(`${searchProductsPurchase(id_products)}`, { type: QueryTypes.SELECT })
 
         return res.status(200).json({
             producto: {
                 dataProducts: products,
+                dataPurchase: purchase
             }
 
         });

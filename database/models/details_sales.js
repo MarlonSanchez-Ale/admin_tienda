@@ -39,8 +39,6 @@ const Details_Sales = config.define('details_sales', {
     timestamps: false
 })
 
-Sales.belongsToMany(Sales, { through: Details_Sales, foreignKey: 'id_sale' });
-Products.belongsToMany(Products, { through: Details_Sales, foreignKey: 'id_products' });
-Point_Sales.belongsToMany(Point_Sales, { through: Details_Sales, foreignKey: 'id_point_sale' });
+
 
 module.exports = Details_Sales;

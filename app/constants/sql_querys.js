@@ -46,6 +46,15 @@ export const searchProducts = (searchString) => {
       `;
 };
 
+export const searchProductsPurchase = (searchString) => {
+    return `
+    select pu.user_register as USUARIO_REGISTRADOR, pu.date_purchase as FECHA_COMPRA, pu.id_purchase as ID_INGRESO, s.id_supplier as ID_PROVEEDOR, s.name as NOMBRE_PROVEEDOR, pu.quantity_products as CANTIDAD_PRODUCTO, pu.unit_price as PRECIO_UNIDAD, pu.total_cost as TOTAL_COSTO from purchase pu 
+    inner join supplier s ON pu.id_supplier = s.id_supplier 
+    where pu.id_products  LIKE '%${searchString}%'
+    ORDER BY pu.date_purchase asc ;
+      `;
+};
+
 export const searchProfilePermission = (searchString) => {
     return `
     SELECT PD.id_permission , PD.permission , PD.de_permission 

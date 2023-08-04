@@ -28,7 +28,6 @@ export default function CreatePointSale() {
         name: "",
         description: "",
         sale_price: 0,
-        stock: 0,
         id_category: ""
     });
 
@@ -67,7 +66,6 @@ export default function CreatePointSale() {
         e.preventDefault();
 
         //console.log(create)
-
         return productsService.create(create)
             .then((res) => {
                 toastService.success(res.title, res.message, {
@@ -78,7 +76,7 @@ export default function CreatePointSale() {
             })
             .catch((error) => {
                 toastService.error(error.title, error.message, { keepAfterRouteChange: true });
-                //console.log(error)
+                console.log(error)
             });
     }
 
@@ -88,7 +86,7 @@ export default function CreatePointSale() {
             name: "",
             description: "",
             sale_price: 0,
-            stock: 0
+            id_category: ""
         })
     }
 
@@ -115,7 +113,7 @@ export default function CreatePointSale() {
                         </Typography>
 
                         <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
-                            <Link href="/PointsSales/">
+                            <Link href="/products/">
                                 <Tooltip content="ir a lista">
                                     <IconButton>
                                         <RiLogoutBoxLine size={20} />
@@ -173,20 +171,7 @@ export default function CreatePointSale() {
                                     }}
                                     required
                                 />
-                                <Input
-                                    type="number"
-                                    size="lg"
-                                    label="Inventario"
-                                    name="stock"
-                                    value={create.stock}
-                                    onChange={(e) => {
-                                        setCreate({
-                                            ...create,
-                                            stock: e.target.value,
-                                        })
-                                    }}
-                                    required
-                                />
+                               
                             </div>
 
                             <div className="flex flex-col w-full gap-4">

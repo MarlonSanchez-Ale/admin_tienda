@@ -8,7 +8,10 @@ export const productsService = {
     edit,
     editCatProduct,
     disable,
-    details
+    details,
+    getPurchase,
+    registerPurchase,
+    editPurchase
 }
 
 function get(filters = {}) {
@@ -36,4 +39,17 @@ function details(id_products) {
 
 function disable(id) {
     return fetchWrapper.put(`${baseUrl}/disable/${id}`);
+}
+
+function getPurchase(id) {
+    return fetchWrapper.get(`${baseUrl}/purchase/list/${id}`);
+}
+
+function registerPurchase(data) {
+    return fetchWrapper.post(`${baseUrl}/purchase/register`, data);
+    
+}
+
+function editPurchase(data) {
+    return fetchWrapper.put(`${baseUrl}/purchase/edit`, data)
 }

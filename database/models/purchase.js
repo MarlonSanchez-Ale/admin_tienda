@@ -29,12 +29,12 @@ const Purchase = config.define('purchase', {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    purchase_price: {
+    unit_price: {
         type: Sequelize.INTEGER,
         allowNull: false
     },
-    status: {
-        type: Sequelize.STRING(15),
+    total_cost: {
+        type: Sequelize.INTEGER,
         allowNull: false
     }
 }, {
@@ -43,7 +43,7 @@ const Purchase = config.define('purchase', {
     timestamps: false
 })
 
-Products.belongsToMany(Products, { through: Purchase, foreignKey: 'id_products' });
-Supplier.belongsToMany(Supplier, { through: Purchase, foreignKey: 'id_supplier' });
+//Products.belongsToMany(Products, { through: Purchase, foreignKey: 'id_products' });
+//Supplier.belongsToMany(Supplier, { through: Purchase, foreignKey: 'id_supplier' });
 
 module.exports = Purchase;

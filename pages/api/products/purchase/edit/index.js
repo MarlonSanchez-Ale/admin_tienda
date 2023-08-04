@@ -10,20 +10,30 @@ export default apiHandler(handler);
 
 function handler(req, res) {
     switch (req.method) {
-        case 'POST':
-            return registerPurchase()
+        case 'PUT':
+            return editPurchase()
         default:
             return res.status(405).end(`Method ${req.method} Not Allowed`)
     }
 
-    async function registerPurchase() {
+    async function editPurchase() {
         const newTransaction = await sequelize.transaction();
 
         try {
 
-            const { id_supplier, id_products, quantity_products, unit_price } = req.body;
+            const { id_purchase, id_supplier, id_products, quantity, unit_price } = req.body;
 
             //Realizando validaciones
+            //Validando la llegada de un nombre de usuario
+
+
+
+            if (!id_purchase) {
+                return res.status(400).json({
+                    title: 'Se ha detectado un error por falta de datos.',
+                    message: 'Debe especificar la compra.'
+                });
+            }
 
             if (!id_supplier) {
                 return res.status(400).json({
@@ -41,7 +51,7 @@ function handler(req, res) {
                 });
             }
 
-            if (!quantity_products) {
+            if (!quantity) {
                 return res.status(400).json({
                     title: 'Se ha detectado un error por falta de datos.',
                     message: 'Debe ingresar la cantidad de producto comprado.'
@@ -55,42 +65,59 @@ function handler(req, res) {
                 });
             }
 
-            const {stock} = await Products.findOne({
-                attributes: ['stock'],
+
+            //quantity_products es la cantidad actual de producto comprado
+
+            const exist = await Purchase.findAll({
                 where: {
-                    id_products: id_products
+                    id_purchase: id_purchase
                 }
             })
 
-            const newRegister = {
-                user_register: req.user.username,
-                date_purchase: moment().format('YYYY-MM-DD'),
-                id_purchase: v4(),
-                id_supplier: id_supplier.value,
-                id_products: id_products,
-                quantity_products: quantity_products,
-                unit_price: unit_price,
-                total_cost: Number(unit_price)*Number(quantity_products)
+
+
+            console.log("-----------------------------------------------------------------")
+
+            console.log(id_purchase)
+
+
+            if (!exist) {
+                res.status(400).json({
+                    title: 'Se ha detectado un error, dato inválido.',
+                    message: 'La compra no existe en la base de datos.'
+                });
+                return;
             }
 
-       
 
-            const nuevoStock = Number(stock)+Number(quantity_products);
+            const updateRegister = {
+                user_register: req.user.username,
+                date_purchase: moment().format('YYYY-MM-DD'),
+                id_supplier: id_supplier.value,
+                quantity_products: quantity,
+                unit_price: unit_price,
+                total_cost: Number(unit_price) * Number(quantity)
+            }
 
-            await Purchase.create(newRegister);
+            const nuevoStock = Number(searchProducts(id_products)) - Number(searchQuantityProduct(id_purchase)) + Number(quantity);
 
-            await Products.update({user_update: req.user.username, date_update: moment().format('YYYY-MM-DD'), stock: nuevoStock}, {
+            await Purchase.update(updateRegister, {
+                where: {
+                    id_purchase
+                }
+            });
+
+            await Products.update({ user_update: req.user.username, date_update: moment().format('YYYY-MM-DD'), stock: nuevoStock }, {
                 where: {
                     id_products: id_products
                 }
             });
 
-
             await newTransaction.commit();
 
             return res.status(200).json({
                 title: 'Operación exitosa',
-                message: 'Se ha registrado el ingreso de producto correctamente.',
+                message: 'Se ha editado la información correctamente.',
                 status: 200
             });
 
@@ -100,4 +127,27 @@ function handler(req, res) {
             throw error;
         }
     }
+}
+
+
+async function searchQuantityProduct(id_purchase) {
+
+    const { quantity_products } = await Purchase.findOne({
+        attributes: ['quantity_products'],
+        where: {
+            id_purchase: id_purchase
+        }
+    })
+
+    return quantity_products
+}
+
+async function searchProducts(id_products) {
+    const { stock } = await Products.findOne({
+        attributes: ['stock'],
+        where: {
+            id_products: id_products
+        }
+    })
+    return stock
 }

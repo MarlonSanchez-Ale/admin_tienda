@@ -1,13 +1,13 @@
 import { fetchWrapper } from "../helpers/fetch-wrapper";
 
-const baseUrl = `/api/supplier`;
+const baseUrl = `/api/sales`;
 
-export const supplierService = {
+export const salesService = {
     get,
     create,
     edit,
     disable,
-    getSuppliers
+    details,
 }
 
 function get(filters = {}) {
@@ -17,18 +17,20 @@ function get(filters = {}) {
 }
 
 function create(data) {
-    return fetchWrapper.post(`${baseUrl}/create`, data)
+    return fetchWrapper.post(`${baseUrl}/register`, data)
 }
 
 function edit(data) {
     return fetchWrapper.put(`${baseUrl}/edit`, data);
-  }
+}
 
-  function disable(id_supplier) {
-    return fetchWrapper.put(`${baseUrl}/disable/${id_supplier}`);
-  }
 
-  
-  function getSuppliers(){
-    return fetchWrapper.get(`${baseUrl}`);
-  }
+function details(id) {
+    return fetchWrapper.get(`${baseUrl}/details/${id}`);
+}
+
+
+function disable(id) {
+    return fetchWrapper.put(`${baseUrl}/disable/${id}`);
+}
+

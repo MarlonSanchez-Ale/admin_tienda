@@ -3,6 +3,11 @@ const config = require("@/database/config")
 
 
 const Sales = config.define('sales', {
+    id_sale: {
+        type: Sequelize.STRING(40),
+        allowNull: false,
+        primaryKey: true
+    },
     user_create: {
         type: Sequelize.STRING(15),
         allowNull: false,
@@ -19,17 +24,8 @@ const Sales = config.define('sales', {
         type: Sequelize.DATE,
         allowNull: false,
     },
-    id_sale: {
-        type: Sequelize.STRING(40),
-        allowNull: false,
-        primaryKey: true
-    },
-    quantity_products: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     total_sale: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false
     },
     status: {

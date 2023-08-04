@@ -6,22 +6,22 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import Link from 'next/link';
 import DisableButton from '@/app/components/elements/forms/disableButton';
 import { RiEdit2Line, RiEraserLine, RiSearchEyeLine } from "react-icons/ri";
-import AddPruchase from '../AddPurchase';
 
-export { ProductsListTable };
 
-ProductsListTable.propTypes = {
-    products: PropTypes.array,
+export { SalesListTable };
+
+SalesListTable.propTypes = {
+    sales: PropTypes.array,
     getCallBack: PropTypes.func.isRequired,
     //urlDownload: PropTypes.string,
     deleteCallBack: PropTypes.func.isRequired,
 };
 
 
-function ProductsListTable({ products, getCallBack, deleteCallBack }) {
+function SalesListTable({ sales, getCallBack, deleteCallBack }) {
     //const hasPermissionDeleteUsers = useHasPermissionStatus("Eliminar Usuario")
 
-    const TABLE_HEAD = ["USER CREADOR", "USUARIO EDITOR", "FECHA CREACIÓN", "FECHA EDICIÓN", "PRODUCTO", "DESCRIPCION", "PRECIO_VENTA", "INVENTARIO", "ESTADO", "OPCIONES"];
+    const TABLE_HEAD = ["USER CREADOR", "USUARIO EDITOR", "FECHA CREACIÓN", "FECHA EDICIÓN", "TOTAL INGRESO",  "ESTADO", "OPCIONES"];
 
     return (
         <>
@@ -43,7 +43,7 @@ function ProductsListTable({ products, getCallBack, deleteCallBack }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {products && products.map(({ USER_CREATE, USER_UPDATE, FECHA_CREADO, FECHA_EDITADO, ID_PRODUCTO, PRODUCTO, DESCRIPCION, PRECIO_VENTA, INVENTARIO, ESTADO }, index) => (
+                        {sales && sales.map(({ ID_VENTA,  USER_CREATE, USER_UPDATE, FECHA_CREADO, FECHA_EDITADO, TOTAL_INGRESO, ESTADO }, index) => (
                             <tr key={index} className="even:bg-blue-gray-50/50">
                                 <td className="p-4">
                                     <Typography variant="small" color="blue-gray" className="font-normal">
@@ -67,22 +67,7 @@ function ProductsListTable({ products, getCallBack, deleteCallBack }) {
                                 </td>
                                 <td className="p-4">
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {PRODUCTO}
-                                    </Typography>
-                                </td>
-                                <td className="p-4">
-                                    <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {DESCRIPCION}
-                                    </Typography>
-                                </td>
-                                <td className="p-4">
-                                    <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {PRECIO_VENTA}
-                                    </Typography>
-                                </td>
-                                <td className="p-4">
-                                    <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {INVENTARIO}
+                                        {TOTAL_INGRESO}
                                     </Typography>
                                 </td>
                                 <td className="p-4">
@@ -93,13 +78,12 @@ function ProductsListTable({ products, getCallBack, deleteCallBack }) {
                                 <td>
                                     <div className='flex flex-row justify-center gap-2'>
                                         <Tooltip content="Detalle">
-                                            <Link href={`/products/details/${ID_PRODUCTO}`}>
+                                            <Link href={`/sales/details/${ID_VENTA}`}>
                                                 <IconButton variant="outlined">
                                                     <RiSearchEyeLine size={20} />
                                                 </IconButton>
                                             </Link>
                                         </Tooltip>
-                                        <AddPruchase id_products={ID_PRODUCTO} callback={getCallBack} />
                                         <DisableButton
                                             callbackDelete={() => {
                                                 return deleteCallBack(ID_PRODUCTO);
@@ -111,7 +95,7 @@ function ProductsListTable({ products, getCallBack, deleteCallBack }) {
                     </tbody>
                 </table>
 
-                {!products &&
+                {!sales &&
                     <div role="status" className="space-y-2.5 animate-pulse w-full p-20">
                         <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[800px] mb-2.5 mx-auto"></div>
                         <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[800px] mb-2.5 mx-auto"></div>
@@ -120,7 +104,7 @@ function ProductsListTable({ products, getCallBack, deleteCallBack }) {
                     </div>
                 }
 
-                {products && !products.length && (
+                {sales && !sales.length && (
                     <Alert
                         icon={<ExclamationTriangleIcon className="mt-px h-6 w-6" />}
                         className="bg-[#e8d7d7] text-[#ff3939] border-l-4 border-[#c92e2e] rounded-none font-medium">

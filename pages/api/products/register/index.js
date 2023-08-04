@@ -11,17 +11,17 @@ export default apiHandler(handler);
 function handler(req, res) {
     switch (req.method) {
         case 'POST':
-            return registerPointSale()
+            return registerProducts()
         default:
             return res.status(405).end(`Method ${req.method} Not Allowed`)
     }
 
-    async function registerPointSale() {
+    async function registerProducts() {
         const newTransaction = await sequelize.transaction();
 
         try {
 
-            const { image, name, description, sale_price, stock, id_category } = req.body;
+            const { image, name, description, sale_price, id_category } = req.body;
 
             //Realizando validaciones
 
@@ -48,12 +48,7 @@ function handler(req, res) {
                 });
             }
 
-            if (!stock) {
-                return res.status(400).json({
-                    title: 'Se ha detectado un error por falta de datos.',
-                    message: 'Debe ingresar el inventario del producto.'
-                });
-            }
+            
 
             if (!id_category) {
                 return res.status(400).json({
@@ -86,7 +81,7 @@ function handler(req, res) {
                 name: name,
                 description: description,
                 sale_price: sale_price,
-                stock: stock,
+                stock: 0,
                 status: "ACTIVO"
             }
 

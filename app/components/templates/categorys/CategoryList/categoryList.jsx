@@ -23,7 +23,7 @@ function CategoryList({ categorys, getCategoryCallback, deleteCategoryCallback }
             <CategoryListTable
                 categorys={categorys}
                 getCategoryCallBack={getCategoryCallback}
-                deleteCategoryCallback={deleteCategoryCallback}
+                deleteCategoryCallBack={deleteCategoryCallback}
             />
         </>
 
